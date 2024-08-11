@@ -1,4 +1,3 @@
-```markdown
 # Flask-Aerospike
 
 [![PyPI version](https://badge.fury.io/py/flask-aerospike.svg)](https://badge.fury.io/py/flask-aerospike)
