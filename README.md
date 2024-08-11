@@ -24,17 +24,20 @@ pip install flask-aerospike
 Here is a simple example of how to use Flask-Aerospike in your Flask application:
 
 ```python
+import aerospike
 from flask import Flask
-from flask_aerospike import Aerospike
+from flask_aerospike import Aerospike, AerospikeSessionInterface
 
 app = Flask(__name__)
-app.config['AEROSPIKE_HOSTS'] = [('127.0.0.1', 3000)]
+app.config['AEROSPIKE_HOSTS'] =  aerospike.client({'hosts': [('127.0.0.1', 3000)]}).connect()
 
-aerospike = Aerospike(app)
+
+ap = Aerospike(app)
+AerospikeSessionInterface(app)
 
 @app.route('/')
 def index():
-    client = aerospike.client
+    client = ap.client
     # Your Aerospike operations here
     return 'Hello, Aerospike!'
 
