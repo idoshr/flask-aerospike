@@ -2,7 +2,7 @@ import sys
 
 sys.path.append("src")
 import flask  # noqa E402
-import flask_session  # noqa E402
+from flask_aerospike import FlaskAerospike # noqa E402
 import pytest  # noqa E402
 
 
@@ -39,7 +39,7 @@ def app_utils():
             def app_get():
                 return flask.session.get("value", "no value set")
 
-            flask_session.Session(app)
+            FlaskAerospike(app)
             return app
 
         def test_session(self, app):

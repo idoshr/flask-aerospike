@@ -3,10 +3,10 @@ import warnings
 import aerospike
 from flask import Flask, current_app
 
-from flask_aerospike.session import AerospikeSessionInterface  # noqa: F401
+from flask_aerospike.session import AerospikeSessionInterface, SessionDefaults  # noqa: F401
 
 
-class Aerospike:
+class FlaskAerospike:
     """Main class used for initialization of Flask-Aerospike."""
 
     def __init__(self, app=None):
@@ -16,7 +16,7 @@ class Aerospike:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app, client=None):
+    def init_app(self, app: Flask):
         if not app or not isinstance(app, Flask):
             raise TypeError("Invalid Flask application instance")
 
@@ -37,11 +37,54 @@ class Aerospike:
 
         # Store objects in application instance so that multiple apps do not
         # end up accessing the same objects.
-        s = {"conn": create_connections(client)}
-        app.extensions["aerospike"][self] = s
+        client = create_connections(self.config.get("FLASK_AEROSPIKE_CLIENT"))
+        app.extensions["aerospike"][self] = {"conn": client}
+
+        app.session_interface = self._get_interface(app, client)
+
+    def _get_interface(self, app, client):
+        config = app.config
+
+        # Flask-session specific settings
+        SESSION_PERMANENT = config.get("SESSION_PERMANENT", SessionDefaults.SESSION_PERMANENT)
+        SESSION_USE_SIGNER = config.get(
+            "SESSION_USE_SIGNER", SessionDefaults.SESSION_USE_SIGNER
+        )  # TODO: remove in 1.0
+        SESSION_KEY_PREFIX = config.get(
+            "SESSION_KEY_PREFIX", SessionDefaults.SESSION_KEY_PREFIX
+        )
+        SESSION_ID_LENGTH = config.get("SESSION_ID_LENGTH", SessionDefaults.SESSION_ID_LENGTH)
+        SESSION_SERIALIZATION_FORMAT = config.get(
+            "SESSION_SERIALIZATION_FORMAT", SessionDefaults.SESSION_SERIALIZATION_FORMAT
+        )
+
+        # Aerospike settings
+        SESSION_AEROSPIKE_NAMESPACE = config.get(
+            "SESSION_AEROSPIKE_NAMESPACE", SessionDefaults.SESSION_AEROSPIKE_NAMESPACE
+        )
+        SESSION_AEROSPIKE_BIND_KEY = config.get(
+            "SESSION_AEROSPIKE_BIND_KEY", SessionDefaults.SESSION_AEROSPIKE_BIND_KEY
+        )
+
+        common_params = {
+            "app": app,
+            "key_prefix": SESSION_KEY_PREFIX,
+            "use_signer": SESSION_USE_SIGNER,
+            "permanent": SESSION_PERMANENT,
+            "sid_length": SESSION_ID_LENGTH,
+            "serialization_format": SESSION_SERIALIZATION_FORMAT,
+        }
+
+        session_interface = AerospikeSessionInterface(
+            **common_params,
+            client=client,
+            namespace=SESSION_AEROSPIKE_NAMESPACE,
+            bind_key=SESSION_AEROSPIKE_BIND_KEY,
+        )
+        return session_interface
 
     @property
-    def connection(self) -> dict:
+    def connection(self) -> aerospike.Client:
         """
         Return aerospike client associated with this aerospike
         instance.

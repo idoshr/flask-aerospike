@@ -29,8 +29,7 @@ class TestAerospikeSession:
         self.setup_aerospike()
         app = app_utils.create_app(
             {
-                "SESSION_TYPE": "aerospike",
-                "SESSION_AEROSPIKE": self.asc,
+                "FLASK_AEROSPIKE_CLIENT": self.asc,
                 "SESSION_AEROSPIKE_NAMESPACE": "test",
             }
         )
