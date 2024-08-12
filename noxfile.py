@@ -28,7 +28,7 @@ def lint(session):
     session.run("pre-commit", "run", "-a")
 
 
-def _run_in_docker(session, db_version="5.0"):
+def _run_in_docker(session, db_version="7.0"):
     session.run(
         "docker",
         "run",
@@ -36,7 +36,7 @@ def _run_in_docker(session, db_version="5.0"):
         "nox_docker_test",
         "-p 3000:3000 -p 3001:3001 -p 3002:3002",
         "-d",
-        f"aerospike:{db_version}",
+        f"aerospike/aerospike-server:{db_version}",
         external=True,
     )
     try:
@@ -49,7 +49,7 @@ def _run_in_docker(session, db_version="5.0"):
 @nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
 @nox.parametrize("flask_session", ["==8.0.0"])
-@nox.parametrize("db_version", ["ee-7.1.0.4"])
+@nox.parametrize("db_version", ["6.4", "7.0", "7.1"])
 def full_tests(session, flask, aerospike, db_version, flask_session):
     """Run tests locally with docker and complete support matrix."""
     session = base_install(session, flask, aerospike, flask_session)
@@ -57,7 +57,7 @@ def full_tests(session, flask, aerospike, db_version, flask_session):
 
 
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
-@nox.parametrize("db_version", ["ee-7.1.0.4"])
+@nox.parametrize("db_version", ["6.4", "7.0", "7.1"])
 def latest(session, db_version):
     """Run minimum tests for checking minimum code quality."""
     flask = ">=3.0.0"
