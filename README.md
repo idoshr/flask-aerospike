@@ -1,7 +1,7 @@
 # Flask-Aerospike
 
 [![PyPI version](https://badge.fury.io/py/flask-aerospike.svg)](https://badge.fury.io/py/flask-aerospike)
-[![CI Tests](https://github.com/idoshr/flask-aerospike/actions/workflows/tests.yml/badge.svg)](https://github.com/flask/flask-aerospike/actions/workflows/tests.yml)
+[![CI Tests](https://github.com/idoshr/flask-aerospike/actions/workflows/test.yml/badge.svg)](https://github.com/flask/flask-aerospike/actions/workflows/test.yml)
 [![Documentation Status](https://readthedocs.org/projects/flask-aerospike/badge/?version=latest)](https://flask-aerospike.readthedocs.io/en/latest/?badge=latest)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6fb8ae00b1008f5f1b20/maintainability)](https://codeclimate.com/github/idoshr/flask-aerospike/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/6fb8ae00b1008f5f1b20/test_coverage)](https://codeclimate.com/github/idoshr/flask-aerospike/test_coverage)
@@ -28,18 +28,17 @@ Here is a simple example of how to use Flask-Aerospike in your Flask application
 ```python
 import aerospike
 from flask import Flask
-from flask_aerospike import Aerospike, AerospikeSessionInterface
+from flask_aerospike import FlaskAerospike
 
 app = Flask(__name__)
-app.config['AEROSPIKE_HOSTS'] =  aerospike.client({'hosts': [('127.0.0.1', 3000)]}).connect()
+app.config['FLASK_AEROSPIKE_CLIENT'] =  aerospike.client({'hosts': [('127.0.0.1', 3000)]}).connect()
 
 
-ap = Aerospike(app)
-AerospikeSessionInterface(app)
+ap = FlaskAerospike(app)
 
 @app.route('/')
 def index():
-    client = ap.client
+    client = ap.connection
     # Your Aerospike operations here
     return 'Hello, Aerospike!'
 
