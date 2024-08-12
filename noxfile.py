@@ -36,7 +36,8 @@ def _run_in_docker(session, db_version="7.0"):
         "run",
         "--name",
         "nox_docker_test",
-        "-p 3000:3000 -p 3001:3001 -p 3002:3002",
+        "-p",
+        "3000:3000",
         "-d",
         f"aerospike/aerospike-server:{db_version}",
         external=True,
@@ -58,10 +59,10 @@ def full_tests(session, flask, aerospike, db_version, flask_session):
     _run_in_docker(session, db_version)
 
 
-@nox.session(python=["3.8", "3.9", "3.10", "3.11"])
-@nox.parametrize("db_version", ["6.4", "7.0", "7.1"])
-def latest(session, db_version):
+@nox.session(python=["3.11"])
+def latest(session):
     """Run minimum tests for checking minimum code quality."""
+    db_version = "7.1"
     flask = ">=3.0.0"
     aerospike = ">=15.0.0"
     flask_session = ">=0.8.0"

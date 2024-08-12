@@ -16,5 +16,5 @@ checks:
     config:
       threshold: 20
 exclude_patterns:
-  - "tests/"
+  - "test/"
   - "example_app/"

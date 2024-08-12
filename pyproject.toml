@@ -110,6 +110,6 @@ filterwarnings = [
   "error",
   "ignore::ResourceWarning",
   "ignore::DeprecationWarning:flask_aerospike",
-  "ignore::DeprecationWarning:tests",
+  "ignore::DeprecationWarning:test",
   "ignore:.*deprecated and ignored since IPython.*:DeprecationWarning"
   ]
