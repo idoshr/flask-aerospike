@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        aerospike-version: ["ee-7.1.0.4"]
+        aerospike-version: ["7.1"]
         python: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
