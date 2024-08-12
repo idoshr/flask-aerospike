@@ -50,7 +50,8 @@ if __name__ == '__main__':
 
 You can configure Flask-Aerospike using the following configuration variables:
 
-- `FLASK_AEROSPIKE_CLIENT`: A list of tuples containing the host and port of your Aerospike nodes.
+- `FLASK_AEROSPIKE_CLIENT`: A list of tuples containing the host and port
+of your Aerospike nodes.
 - `SESSION_AEROSPIKE_NAMESPACE`: The namespace to use in Aerospike.
 - `SESSION_AEROSPIKE_BIND_KEY`: The set to use in Aerospike.
 
