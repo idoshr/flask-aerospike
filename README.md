@@ -9,7 +9,9 @@
 
 ## Overview
 
-Flask-Aerospike is a Flask extension that provides integration with the Aerospike database. It simplifies the process of connecting to and interacting with Aerospike from your Flask applications.
+Flask-Aerospike is a Flask extension that provides integration with the Aerospike database.
+It simplifies the process of connecting to and interacting with Aerospike from your
+Flask applications.
 
 ## Installation
 
@@ -59,7 +61,8 @@ The full documentation is available at [Read the Docs](https://flask-aerospike.r
 
 ## Contributing
 
-Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) for more information.
+Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md)
+for more information.
 
 ## License
 
@@ -72,4 +75,3 @@ This project is maintained by:
 - Ido Shraga
 
 See the [AUTHORS.md](AUTHORS.md) file for a full list of contributors.
-```

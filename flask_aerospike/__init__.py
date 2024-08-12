@@ -3,8 +3,7 @@ import warnings
 import aerospike
 from flask import Flask, current_app
 
-from flask_aerospike.session import *
-
+from flask_aerospike.session import AerospikeSessionInterface  # noqa: F401
 
 
 class Aerospike:
@@ -62,6 +61,6 @@ def create_connections(client: aerospike.Client):
             RuntimeWarning,
             stacklevel=1,
         )
-        client = aerospike.client({'hosts': [('127.0.0.1', 3000)]}).connect()
+        client = aerospike.client({"hosts": [("127.0.0.1", 3000)]}).connect()
 
     return client

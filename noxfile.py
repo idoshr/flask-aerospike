@@ -3,25 +3,20 @@
 Nox is Tox tool replacement.
 """
 
-import shutil
-from pathlib import Path
-
 import nox
 
 nox.options.sessions = "latest", "lint", "documentation_tests"
 
 
-def base_install(session, flask, aerospike):
+def base_install(session, flask, aerospike, flask_session):
     """Create basic environment setup for tests and linting."""
     session.run("python", "-m", "pip", "install", "--upgrade", "pip")
     session.run("python", "-m", "pip", "install", "setuptools_scm[toml]>=6.3.1")
 
-
-
     session.install(
         f"Flask{flask}",
         f"aerospike{aerospike}",
-        f"flask-session",
+        f"flask-session{flask_session}",
     )
     return session
 
@@ -53,10 +48,11 @@ def _run_in_docker(session, db_version="5.0"):
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
 @nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
+@nox.parametrize("flask_session", ["8.0.0"])
 @nox.parametrize("db_version", ["ee-7.1.0.4"])
-def full_tests(session, flask, aerospike, db_version):
+def full_tests(session, flask, aerospike, db_version, flask_session):
     """Run tests locally with docker and complete support matrix."""
-    session = base_install(session, flask, aerospike)
+    session = base_install(session, flask, aerospike, flask_session)
     _run_in_docker(session, db_version)
 
 
@@ -66,7 +62,8 @@ def latest(session, db_version):
     """Run minimum tests for checking minimum code quality."""
     flask = ">=3.0.0"
     aerospike = ">=15.0.0"
-    session = base_install(session, flask, aerospike)
+    flask_session = ">=8.0..0"
+    session = base_install(session, flask, aerospike, flask_session)
     if session.interactive:
         _run_in_docker(session, db_version)
     else:
@@ -75,8 +72,9 @@ def latest(session, db_version):
 
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
 @nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
+@nox.parametrize("flask_session", ["8.0.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
-def ci_cd_tests(session, flask, aerospike):
+def ci_cd_tests(session, flask, aerospike, flask_session):
     """Run test suite with pytest into ci_cd (no docker)."""
-    session = base_install(session, flask, aerospike)
+    session = base_install(session, flask, aerospike, flask_session)
     session.run("pytest", *session.posargs)

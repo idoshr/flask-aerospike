@@ -1,6 +1,7 @@
-import flask
 import aerospike
+import flask
 from aerospike import exception as ex
+
 from flask_aerospike.session import AerospikeSession, SessionDefaults
 
 
@@ -8,7 +9,7 @@ class TestAerospikeSession:
     """This requires package: Aerospike"""
 
     def setup_aerospike(self):
-        self.asc = aerospike.client({'hosts': [('127.0.0.1', 3000)]}).connect()
+        self.asc = aerospike.client({"hosts": [("127.0.0.1", 3000)]}).connect()
         # try:
         #     self.mc.flush_all()
         #     yield
@@ -18,21 +19,20 @@ class TestAerospikeSession:
 
     def retrieve_stored_session(self, key):
         try:
-            return self.asc.get((
-                                 'test',
-                                 key,
-                                 SessionDefaults.SESSION_AEROSPIKE_BIND_KEY))[2]
+            return self.asc.get(
+                ("test", key, SessionDefaults.SESSION_AEROSPIKE_BIND_KEY)
+            )[2]
         except (ex.RecordNotFound, ex.NamespaceNotFound):
             return None
-
 
     def test_aerospike_default(self, app_utils):
         self.setup_aerospike()
         app = app_utils.create_app(
-            {"SESSION_TYPE": "aerospike",
-             "SESSION_AEROSPIKE": self.asc,
-             'SESSION_AEROSPIKE_NAMESPACE': 'test',
-             }
+            {
+                "SESSION_TYPE": "aerospike",
+                "SESSION_AEROSPIKE": self.asc,
+                "SESSION_AEROSPIKE_NAMESPACE": "test",
+            }
         )
 
         with app.test_request_context():

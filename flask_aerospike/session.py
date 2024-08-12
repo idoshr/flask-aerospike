@@ -2,10 +2,9 @@ import warnings
 from datetime import timedelta as TimeDelta
 from typing import Optional
 
-from flask import Flask
 import aerospike
 from aerospike import exception as ex
-
+from flask import Flask
 from flask_session._utils import total_seconds
 from flask_session.base import ServerSideSession, ServerSideSessionInterface
 from flask_session.defaults import Defaults
@@ -54,7 +53,7 @@ class AerospikeSessionInterface(ServerSideSessionInterface):
                 RuntimeWarning,
                 stacklevel=1,
             )
-            self.client = aerospike.client({'hosts': [('127.0.0.1', 3000)]}).connect()
+            self.client = aerospike.client({"hosts": [("127.0.0.1", 3000)]}).connect()
         else:
             self.client = client
 
@@ -67,7 +66,9 @@ class AerospikeSessionInterface(ServerSideSessionInterface):
     def _retrieve_session_data(self, store_id: str) -> Optional[dict]:
         # Get the saved session (value) from the database
         try:
-            serialized_session_data = self.client.get((self.namespace, store_id, self.bind_key))
+            serialized_session_data = self.client.get(
+                (self.namespace, store_id, self.bind_key)
+            )
         except (ex.RecordNotFound, ex.NamespaceNotFound):
             return None
         if serialized_session_data:
@@ -85,11 +86,10 @@ class AerospikeSessionInterface(ServerSideSessionInterface):
     ) -> None:
         storage_time_to_live = total_seconds(session_lifetime)
 
-        # Serialize the session data
-        serialized_session_data = self.serializer.dumps(dict(session))
-
         # Update existing or create new session in the database
 
-        self.client.put(key=(self.namespace, store_id, self.bind_key),
-                        bins=dict(session),
-                        meta={'ttl': storage_time_to_live})
+        self.client.put(
+            key=(self.namespace, store_id, self.bind_key),
+            bins=dict(session),
+            meta={"ttl": storage_time_to_live},
+        )
