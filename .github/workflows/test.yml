@@ -1,0 +1,38 @@
+name: CI Tests
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        aerospike-version: ["ee-7.1.0.4"]
+        python: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nox virtualenv
+    - name: Start Aerospike
+      uses: reugn/github-action-aerospike@v1
+      with:
+        server-version: ${{ matrix.aerospike-version }}
+        port: 3000
+    - name: Test build
+      run: "nox -s ci_cd_tests --python ${{ matrix.python }}"
