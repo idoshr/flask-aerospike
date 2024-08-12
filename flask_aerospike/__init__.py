@@ -3,7 +3,10 @@ import warnings
 import aerospike
 from flask import Flask, current_app
 
-from flask_aerospike.session import AerospikeSessionInterface, SessionDefaults  # noqa: F401
+from flask_aerospike.session import (  # noqa: F401
+    AerospikeSessionInterface,
+    SessionDefaults,
+)
 
 
 class FlaskAerospike:
@@ -46,14 +49,18 @@ class FlaskAerospike:
         config = app.config
 
         # Flask-session specific settings
-        SESSION_PERMANENT = config.get("SESSION_PERMANENT", SessionDefaults.SESSION_PERMANENT)
+        SESSION_PERMANENT = config.get(
+            "SESSION_PERMANENT", SessionDefaults.SESSION_PERMANENT
+        )
         SESSION_USE_SIGNER = config.get(
             "SESSION_USE_SIGNER", SessionDefaults.SESSION_USE_SIGNER
         )  # TODO: remove in 1.0
         SESSION_KEY_PREFIX = config.get(
             "SESSION_KEY_PREFIX", SessionDefaults.SESSION_KEY_PREFIX
         )
-        SESSION_ID_LENGTH = config.get("SESSION_ID_LENGTH", SessionDefaults.SESSION_ID_LENGTH)
+        SESSION_ID_LENGTH = config.get(
+            "SESSION_ID_LENGTH", SessionDefaults.SESSION_ID_LENGTH
+        )
         SESSION_SERIALIZATION_FORMAT = config.get(
             "SESSION_SERIALIZATION_FORMAT", SessionDefaults.SESSION_SERIALIZATION_FORMAT
         )

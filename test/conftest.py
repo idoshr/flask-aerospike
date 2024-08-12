@@ -2,8 +2,9 @@ import sys
 
 sys.path.append("src")
 import flask  # noqa E402
-from flask_aerospike import FlaskAerospike # noqa E402
 import pytest  # noqa E402
+
+from flask_aerospike import FlaskAerospike  # noqa E402
 
 
 @pytest.fixture(scope="function")
