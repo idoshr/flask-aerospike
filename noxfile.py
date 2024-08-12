@@ -17,6 +17,8 @@ def base_install(session, flask, aerospike, flask_session):
         f"Flask{flask}",
         f"aerospike{aerospike}",
         f"flask-session{flask_session}",
+        "-e",
+        ".[dev]",
     )
     return session
 
