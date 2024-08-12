@@ -49,7 +49,7 @@ def _run_in_docker(session, db_version="7.0"):
 
 
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
-@nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
+@nox.parametrize("flask", ["==2.3.3", ">=3.0.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
 @nox.parametrize("flask_session", ["==0.8.0"])
 @nox.parametrize("db_version", ["6.4", "7.0", "7.1"])
@@ -74,7 +74,7 @@ def latest(session):
 
 
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
-@nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
+@nox.parametrize("flask", ["==2.3.3", ">=3.0.0"])
 @nox.parametrize("flask_session", ["==0.8.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
 def ci_cd_tests(session, flask, aerospike, flask_session):

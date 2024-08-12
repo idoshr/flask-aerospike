@@ -24,7 +24,7 @@ classifiers = [
   "Framework :: Flask",
 ]
 dependencies = [
-  "Flask>=1.1.4",
+  "Flask>=2.2",
   "aerospike",
   'importlib-metadata; python_version<"3.8"',
 ]
