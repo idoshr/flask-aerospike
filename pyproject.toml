@@ -105,7 +105,7 @@ use_parentheses = true
 
 [tool.pytest.ini_options]
 #addopts = "--cov=flask_aerospike --cov-config=setup.cfg"
-testpaths = ["tests"]
+testpaths = ["test"]
 filterwarnings = [
   "error",
   "ignore::ResourceWarning",
