@@ -62,7 +62,7 @@ def latest(session, db_version):
     """Run minimum tests for checking minimum code quality."""
     flask = ">=3.0.0"
     aerospike = ">=15.0.0"
-    flask_session = ">=8.0..0"
+    flask_session = ">=8.0.0"
     session = base_install(session, flask, aerospike, flask_session)
     if session.interactive:
         _run_in_docker(session, db_version)
