@@ -48,7 +48,7 @@ def _run_in_docker(session, db_version="7.0"):
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
 @nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
-@nox.parametrize("flask_session", ["==8.0.0"])
+@nox.parametrize("flask_session", ["==0.8.0"])
 @nox.parametrize("db_version", ["6.4", "7.0", "7.1"])
 def full_tests(session, flask, aerospike, db_version, flask_session):
     """Run tests locally with docker and complete support matrix."""
@@ -62,7 +62,7 @@ def latest(session, db_version):
     """Run minimum tests for checking minimum code quality."""
     flask = ">=3.0.0"
     aerospike = ">=15.0.0"
-    flask_session = ">=8.0.0"
+    flask_session = ">=0.8.0"
     session = base_install(session, flask, aerospike, flask_session)
     if session.interactive:
         _run_in_docker(session, db_version)
@@ -72,7 +72,7 @@ def latest(session, db_version):
 
 @nox.session(python=["3.8", "3.9", "3.10", "3.11"])
 @nox.parametrize("flask", ["==1.1.4", "==2.0.3", "==2.3.3", ">=3.0.0"])
-@nox.parametrize("flask_session", ["==8.0.0"])
+@nox.parametrize("flask_session", ["==0.8.0"])
 @nox.parametrize("aerospike", ["<15.0.0", ">=15.0.0"])
 def ci_cd_tests(session, flask, aerospike, flask_session):
     """Run test suite with pytest into ci_cd (no docker)."""
